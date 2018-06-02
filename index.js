@@ -16,7 +16,7 @@ var longpoll = function(app, opts) {
     if (opts) {
         config = _.assign(config, opts);
     }
-    
+
     // For logging messages
     var log = function() {
         if (!config.DEBUG) return;
@@ -38,24 +38,24 @@ var longpoll = function(app, opts) {
     }
 
     var _newDispatcher = function(url, opts) {
-        
+
         // Init EventEmitter
         var dispatcher = new EventEmitter2({
             wildcard: true,
             delimiter: "."
         });
-        
+
         // Log on every event emitted
         dispatcher.onAny((event, value) => {
             log("Event emitted:", url + ":", event, value);
         });
-        
+
         if (opts) {
             if (opts.maxListeners && opts.maxListeners > 0) {
                 dispatcher.setMaxListeners(opts.maxListeners);
             }
         }
-        
+
         global.express_longpoll_emitters[url] = dispatcher;
         return dispatcher;
     };
@@ -81,7 +81,7 @@ var longpoll = function(app, opts) {
             }
             return this._setupListener(url, "longpoll", null, opts);
         },
-        
+
         // Publishes to everyone listening to this long poll
         publish: function(url, data) {
             return new Promise(function(resolve, reject) {
@@ -94,12 +94,12 @@ var longpoll = function(app, opts) {
                 }
             });
         },
-        
+
         // Pushes data to listeners with an extra ID
         publishToId: function(url, id, data) {
             return this._emit(url, "longpoll." + id, data);
         },
-        
+
         // Setup the longpoll listener in an express .get route
         _setupListener: function(url, event, middleware, opts) {
             if (middleware == null) {
@@ -123,11 +123,12 @@ var longpoll = function(app, opts) {
                     if (req.id) {
                         // Add the ID to the event listener
                         eventId = eventId + "." + req.id;
-                        // Clear all previous events for the ID, we only need one
-                        log("Old Events cleared: ", url, eventId);
-                        dispatcher.removeAllListeners([eventId]);
                     }
 
+                    // Clear all previous events for the ID, we only need one
+                    log("Old Events cleared: ", url, eventId);
+                    dispatcher.removeAllListeners([eventId]);
+                    
                     // Method that Creates event listener
                     var sub = function(res) {
                         log("Event listener registered: ", req.url + ":", eventId);
@@ -144,7 +145,7 @@ var longpoll = function(app, opts) {
                 resolve();
             });
         },
-        
+
         // Emits an event to an event listener
         _emit: function(url, event, data) {
             return new Promise(function(resolve, reject) {
@@ -157,7 +158,7 @@ var longpoll = function(app, opts) {
                 }
             });
         }
-        
+
     }
 
     return exportObj;
