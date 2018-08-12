@@ -1,17 +1,20 @@
 {
-  "name": "express-longpoll",
-  "version": "0.0.4",
+  "name": "awly-express-longpoll",
+  "version": "1.0.0",
   "description": "Easy long polling for express.",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yehya/express-longpoll.git"
+    "url": "git+https://github.com/sirceljm/express-longpoll.git"
   },
   "scripts": {
     "test": "mocha --timeout 5000",
     "start": "SET NODE_ENV=dev && node server.js"
   },
-  "author": "Yehya Awad <yehyaawad@hotmail.com> (http://www.yehyaawad.com/)",
+  "author": "Matej Šircelj <sircelj.m@gmail.com> (https://github.com/sirceljm/)",
+  "contributors": [
+    "Yehya Awad <yehyaawad@hotmail.com> (http://www.yehyaawad.com/)"
+  ],
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
